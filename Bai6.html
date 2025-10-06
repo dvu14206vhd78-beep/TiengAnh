@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tiếng Anh Bài 6</title>
+    <style>
+      :root {
+        --ok: #d4edda;
+        --bad: #f8d7da;
+        --muted: #666;
+        --primary: #0d6efd;
+        --secondary: #6c757d;
+        --bg: #f4f8fb;
+        --card-bg: #fff;
+      }
+      body {
+        font-family: Inter, Roboto, Arial, sans-serif;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0;
+        background: var(--bg);
+        color: #111;
+      }
+
+      /* Top Menu */
+      .top-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e6f7ff;
+        padding: 14px 20px;
+        border-bottom: 2px solid #d0ebff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .menu-title {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #0d6efd;
+      }
+
+      .menu-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .menu-buttons .btn {
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 500;
+        transition: background 0.2s ease, transform 0.1s ease;
+      }
+
+      .menu-buttons .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .menu-buttons .btn.secondary {
+        background: var(--secondary);
+        color: #fff;
+      }
+
+      .menu-buttons .btn:hover {
+        opacity: 0.9;
+        transform: scale(1.03);
+      }
+
+      #scoreDisplay {
+        font-weight: 700;
+        margin-left: 12px;
+        color: #333;
+      }
+
+      /* Main Container */
+      h1 {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      h2 {
+        margin-top: 30px;
+        color: #0d6efd;
+        border-bottom: 2px solid #d0ebff;
+        padding-bottom: 4px;
+      }
+
+      .container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Question block */
+      .question {
+        padding: 14px;
+        border-radius: 10px;
+        margin: 14px 0;
+        border: 1px solid #eee;
+        background: #fafafa;
+        transition: 0.2s ease;
+      }
+
+      .question:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .q-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .options label {
+        display: block;
+        margin: 8px 0;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+      }
+
+      .options label:hover {
+        background: #f1f5ff;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .answer-key {
+        margin-top: 8px;
+        font-size: 0.95em;
+        color: var(--muted);
+      }
+
+      .correct {
+        background: var(--ok) !important;
+      }
+
+      .incorrect {
+        background: var(--bad) !important;
+      }
+
+      /* Drag & drop */
+      .word-bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+        border: 1px dashed #ccc;
+        border-radius: 8px;
+        min-height: 48px;
+        background: #fff;
+      }
+
+      .word {
+        background: #f0f0f0;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: grab;
+        border: 1px solid #d0d0d0;
+      }
+
+      .dropzone {
+        min-height: 48px;
+        padding: 8px;
+        border: 1px dashed #bbb;
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: #fff;
+      }
+
+      .small {
+        font-size: 0.95em;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .passage {
+        background: #fdfdfd;
+        border-left: 4px solid #0d6efd;
+        padding: 12px;
+        margin: 14px 0;
+        border-radius: 6px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Menu trên cùng -->
+    <div class="top-menu">
+      <div class="menu-title">Ôn tập Tiếng Anh Bài 6</div>
+      <div class="menu-buttons">
+        <button class="btn primary" id="showScoreBtn">Xem kết quả</button>
+        <button
+          class="btn secondary"
+          id="redoBtn"
+          style="background-color: #111"
+        >
+          Làm lại & đảo câu
+        </button>
+        <button class="btn secondary" id="toggleAnsBtn">
+          Hiện/ẩn đáp án đúng
+        </button>
+        <span id="scoreDisplay"></span>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Part 1</h2>
+      <div id="part1"></div>
+
+      <h2>Part 2</h2>
+      <div id="part2"></div>
+
+      <h2>Part 3</h2>
+      <div id="part3"></div>
+
+      <h2>Part 4</h2>
+      <div id="part4"></div>
+
+      <h2>Part 5</h2>
+      <div id="part5"></div>
+
+      <h2>Part 6</h2>
+      <div id="part6"></div>
+    </div>
+
+    <script>
+      // --- Data ---
+      const data = {
+        part1: [
+          {
+            id: "p1q1",
+            q: "Nhà khoa học dữ liệu thu thập và xử lý thông tin từ dữ liệu lớn.",
+            opts: [
+              "The data analyst stores customer profiles in a secure internal database.",
+              "The data scientist tests machine learning tools from big data.",
+              "The data scientist gathers and processes information from big data.",
+            ],
+            ans: 2,
+          },
+          {
+            id: "p1q2",
+            q: "Nhà phân tích an ninh bảo vệ hệ thống khỏi tấn công mạng.",
+            opts: [
+              "The cybersecurity analyst manages access and installs software on systems.",
+              "The cybersecurity analyst protects systems from cyberattacks.",
+              "The cybersecurity analyst protects systems using internal security software.",
+            ],
+            ans: 1,
+          },
+          {
+            id: "p1q3",
+            q: "Nhà thiết kế giao diện tập trung vào trải nghiệm người dùng trên ứng dụng.",
+            opts: [
+              "The UI designer writes system code for mobile app displays.",
+              "The UI designer tests user passwords during application login.",
+              "The UI designer focuses on user experience in applications.",
+            ],
+            ans: 2,
+          },
+          {
+            id: "p1q4",
+            q: "Nhà phát triển phần mềm viết mã và tạo các ứng dụng hữu ích.",
+            opts: [
+              "The AI engineer designs useful tools for mobile security.",
+              "The support technician helps users reset useful applications.",
+              "The software developer writes code and creates useful applications.",
+            ],
+            ans: 2,
+          },
+        ],
+
+        part2: [
+          {
+            id: "p2q1",
+            q: "Do they test the network manually or rely on automation….?",
+            opts: ["always", "every time", "often"],
+            ans: 1,
+          },
+          {
+            id: "p2q2",
+            q: "…… he forgets to document code, which causes confusion during testing.",
+            opts: ["often", "usually", "from time to time"],
+            ans: 2,
+          },
+          {
+            id: "p2q3",
+            q: "Our team has project updates…… to keep everyone aligned.",
+            opts: ["once a week", "normally", "rarely"],
+            ans: 0,
+          },
+          {
+            id: "p2q4",
+            q: "She……………joins the team call unless there's a system error to report.",
+            opts: ["always", "every week", "hardly ever"],
+            ans: 0,
+          },
+          {
+            id: "p2q5",
+            q: "I……………..check emails first in the morning to make the plan for the whole day.",
+            opts: ["all the time", "always", "once a day"],
+            ans: 1,
+          },
+        ],
+
+        part3: [
+          {
+            id: "p3q1",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "David works as a database administrator at a medical software company. Every morning, he logs into the system to check performance reports. He is responsible for designing databases that store important information, such as patient records and appointments. David also maintains databases by running regular updates and backups. From time to time, he works with software developers to test new features. If there is a problem with data access, David helps diagnose the problem quickly to avoid delays.",
+            q: "What does David do to prevent data issues from affecting company systems?",
+            opts: [
+              "He upgrades devices used by developers",
+              "He maintains and backs up the databases",
+              "He writes scripts to analyze user traffic",
+            ],
+            ans: 1,
+          },
+          {
+            id: "p3q2",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Amira is a helpdesk supervisor at a university IT department. She supervises a team of technical support people who assist staff and students. When someone has a problem with their computer, they contact Amira’s team. She assigns the cases and checks that solutions are delivered on time. Amira often joins team calls to review performance and discuss common issues. Sometimes she trains new team members or writes short guides for solving simple problems.",
+            q: "How often does Amira evaluate her team’s support work?",
+            opts: [
+              "Daily, by joining service calls",
+              "Sometimes, during team performance reviews",
+              "Often, through meetings and performance checks",
+            ],
+            ans: 2,
+          },
+          {
+            id: "p3q3",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Amira is a helpdesk supervisor at a university IT department. She supervises a team of technical support people who assist staff and students. When someone has a problem with their computer, they contact Amira's team. She assigns the cases and checks that solutions are delivered on time. Amira often joins team calls to review performance and discuss common issues. Sometimes she trains new team members or writes short guides for solving simple problems.",
+            q: "What does Amira do to make sure users receive good support ?",
+            opts: [
+              "She upgrades all software and hardware herself during the weekends.",
+              "She contacts users directly to solve every technical problem.",
+              "She creates simple instructions, manages her team, and tracks their support quality.",
+            ],
+            ans: 2,
+          },
+          {
+            id: "p3q4",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Anna works as an IT support technician in a busy office. She usually arrives at 8:00 a.m. and starts her day by checking support tickets. She normally handles hardware problems, but sometimes deals with software issues. Occasionally, she receives urgent calls from sales staff who are having problems during a client meeting. From time to time, Anna leads short training sessions to help employees learn new tools. She rarely visits other departments unless the issue requires her to be there physically.",
+            q: "What kind of problems does Anna mostly handle?",
+            opts: ["network problems", "software crashes", "hardware issues"],
+            ans: 2,
+          },
+          {
+            id: "p3q5",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "David works as a database administrator at a medical software company. Every morning, he logs into the system to check performance reports. He is responsible for designing databases that store important information, such as patient records and appointments. David also maintains databases by running regular updates and backups. From time to time, he works with software developers to test new features. If there is a problem with data access, David helps diagnose the problem quickly to avoid delays.",
+            q: "Why is David’s role important for the company’s daily operations?",
+            opts: [
+              "He manages the entire IT department and writes backup codes.",
+              "He tests new medical equipment with doctors.",
+              "He ensures data systems run well and helps fix data issues quickly.",
+            ],
+            ans: 2,
+          },
+        ],
+
+        part4: [
+          {
+            id: "p4q1",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Amira is a helpdesk supervisor at a university IT department. She supervises a team of technical support people who assist staff and students. When someone has a problem with their computer, they contact Amira’s team. She assigns the cases and checks that solutions are delivered on time. Amira often joins team calls to review performance and discuss common issues. Sometimes she trains new team members or writes short guides for solving simple problems.",
+            q: "Amira directly solves most of the support orders herself.",
+            type: "tf",
+            opts: ["True", "False"],
+            ans: 1,
+          },
+          {
+            id: "p4q2",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Hana works as a support technician at a small business. She looks after all the computers in the office and makes sure everything is working well. Each morning, she checks emails for reported issues. If someone's computer isn't working, she visits their desk to diagnose the problem. Hana also sets up new computers for new employees and installs software when needed. From time to time, she gives advice on how to avoid common tech problems.",
+            q: "Hana installs new software and fixes broken computers when needed.",
+            type: "tf",
+            opts: ["True", "False"],
+            ans: 0,
+          },
+          {
+            id: "p4q3",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Sophie is a systems analyst at a company that builds software for businesses. She talks to clients to understand what they need and writes specifications for the developers. Sophie meets with both clients and the software team to make sure everyone understands the goals. She also tests new software features to check that they meet the requirements. Her job helps connect business needs with technical solutions.",
+            q: "She writes software specifications so developers can build what clients need.",
+            type: "tf",
+            opts: ["True", "False"],
+            ans: 0,
+          },
+          {
+            id: "p4q4",
+            instruction:
+              "Fill in the blank with TWO OR THREE words from the text to complete the summary.",
+            passage:
+              "Hana works as a support technician at a small business. She looks after all the computers in the office and makes sure everything is working well. Each morning, she checks emails for reported issues. If someone's computer isn't working, she visits their desk to diagnose the problem. Hana also sets up new computers for new employees and installs software when needed. From time to time, she gives advice on how to avoid common tech problems.",
+            q: "Summary: Hana is responsible for maintaining computers and supporting employees with tech issues. She installs software, sets up devices, and diagnoses problems onsite. She checks emails for reported issues and responds…………………..",
+            type: "fill",
+            ans: "when needed",
+          },
+          {
+            id: "p4q5",
+            instruction:
+              "Fill in the blank with TWO OR THREE words from the text to complete the summary.",
+            passage:
+              "Freddy is a project manager for an international software company. He is responsible for IT projects that involve building custom applications for clients. Freddy usually starts his day by reviewing project timelines and task lists. He meets with developers, designers, and clients to make sure everything is going as planned. If someone has a problem with deadlines or tools, Freddy helps solve it. He also writes reports to update senior managers on the team's progress.",
+            q: "Summary : Freddy manages IT projects and reviews timelines and tasks every morning. He regularly meets clients and his team to solve problems or check progress. He also updates senior managers by writing…………………..",
+            type: "fill",
+            ans: "progress reports",
+          },
+          {
+            id: "p4q6",
+            instruction:
+              "Fill in the blank with TWO OR THREE words from the text to complete the summary.",
+            passage:
+              "Sophie is a systems analyst at a company that builds software for businesses. When clients need a new system, Sophie visits them to understand their needs. She writes specifications for the software so the developers can build exactly what the client wants. Sophie often attends meetings with both the client and the software team. Sometimes she tests new software features to see if they match the requirements. She plays an important role in connecting business needs with technical solutions.",
+            q: "Summary: Sophie meets with clients to understand their software needs and writes detailed plans. These specifications help developers build the correct system. She also tests new features to check if they ……..",
+            type: "fill",
+            ans: "match the requirements",
+          },
+        ],
+
+        part5: [
+          {
+            id: "p5q1",
+            p: "Complete the sentence with THREE or FOUR WORDS using the given prompt.",
+            q: "Ahmes…….. all of our IT projects. (responsible/ always)",
+            ans: "is always responsible for",
+          },
+          {
+            id: "p5q2",
+            p: "Complete the sentence with THREE or FOUR WORDS using the given prompt.",
+            q: "He……..after he talks with the project manager. (write/ specifications/ usually)",
+            ans: "usually writes the specifications",
+          },
+          {
+            id: "p5q3",
+            p: "Complete the sentence with THREE or FOUR WORDS using the given prompt.",
+            q: "We……..unless we can’t fix it ourselves. (call/ support/ rarely)",
+            ans: "rarely call for support",
+          },
+          {
+            id: "p5q4",
+            p: "Complete the sentence with THREE or FOUR WORDS using the given prompt.",
+            q: "He…………in the morning before the office gets busy. ( write/ software/ usually )",
+            ans: "usually writes software",
+          },
+          {
+            id: "p5q5",
+            p: "Complete the sentence with THREE or FOUR WORDS using the given prompt.",
+            q: "She…………every Monday to plan her weekly tasks. ( attend/ always/ meeting )",
+            ans: "always attends a meeting",
+          },
+        ],
+
+        part6: [
+          {
+            id: "p6q1",
+            q: "Anna often sets up new computers when her company hires new staff.",
+            words: [
+              "computers",
+              "up",
+              "when",
+              "Anna often",
+              "hires",
+              "sets",
+              "new staff.",
+              "her company",
+              "new",
+            ],
+          },
+          {
+            id: "p6q2",
+            q: "We are responsible for our IT projects, so we rarely leave tasks unfinished.",
+            words: [
+              "rarely",
+              "tasks",
+              "are responsible",
+              "unfinished.",
+              "IT project,",
+              "leave",
+              "for our",
+              "so we",
+              "We",
+            ],
+          },
+          {
+            id: "p6q3",
+            q: "When I look after all the computers, I sometimes forget to update the antivirus.",
+            words: [
+              "all the",
+              "update",
+              "I sometimes",
+              "after",
+              "the",
+              "forget",
+              "When",
+              "I look",
+              "to",
+              "computers,",
+              "antivirus.",
+            ],
+          },
+          {
+            id: "p6q4",
+            q: "Does your team diagnose the problem quickly when users report system errors by email?",
+            words: [
+              "your team",
+              "by email ?",
+              "problem quickly",
+              "users",
+              "diagnose the",
+              "report",
+              "Does",
+              "when",
+              "system errors",
+            ],
+          },
+          {
+            id: "p6q5",
+            q: "I usually write software in the morning before attending the team meeting.",
+            words: [
+              "software",
+              "the team",
+              "meeting",
+              "the morning",
+              "I usually",
+              "in",
+              "before",
+              "write",
+              "attending",
+            ],
+          },
+        ],
+      };
+
+      // --- Utility ---
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      // --- Render Part1 ---
+      function renderPart1() {
+        const el = document.getElementById("part1");
+        el.innerHTML = "";
+        data.part1.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part2 ---
+      function renderPart2() {
+        const el = document.getElementById("part2");
+        el.innerHTML = "";
+        data.part2.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part3 ---
+      function renderPart3() {
+        const el = document.getElementById("part3");
+        el.innerHTML = "";
+        data.part3.forEach((item, idx) => {
+          if (item.instruction) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.instruction;
+            el.appendChild(instr);
+          }
+          if (item.passage) {
+            const passage = document.createElement("div");
+            passage.className = "passage";
+            passage.textContent = item.passage;
+            el.appendChild(passage);
+          }
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part4 ---
+      function renderPart4() {
+        const el = document.getElementById("part4");
+        el.innerHTML = "";
+        data.part4.forEach((item, idx) => {
+          if (item.instruction) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.instruction;
+            el.appendChild(instr);
+          }
+          if (item.passage) {
+            const passage = document.createElement("div");
+            passage.className = "passage";
+            passage.textContent = item.passage;
+            el.appendChild(passage);
+          }
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          if (item.type === "tf") {
+            const opts = document.createElement("div");
+            opts.className = "options";
+            item.opts.forEach((opt, i) => {
+              const label = document.createElement("label");
+              const r = document.createElement("input");
+              r.type = "radio";
+              r.name = item.id;
+              r.value = i;
+              label.appendChild(r);
+              label.append(" " + opt);
+              opts.appendChild(label);
+            });
+            q.appendChild(opts);
+          } else if (item.type === "fill") {
+            const inp = document.createElement("input");
+            inp.type = "text";
+            inp.name = item.id;
+            q.appendChild(inp);
+          }
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part5 ---
+      function renderPart5() {
+        const el = document.getElementById("part5");
+        el.innerHTML = "";
+        data.part5.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          if (item.p) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.p;
+            q.appendChild(instr);
+          }
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const inp = document.createElement("input");
+          inp.type = "text";
+          inp.name = item.id;
+          q.appendChild(inp);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part6 ---
+      function renderPart6() {
+        const el = document.getElementById("part6");
+        el.innerHTML = "";
+        data.part6.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          q.dataset.answer = item.q;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 13 + ". Put the words in order.";
+          q.appendChild(title);
+          const bank = document.createElement("div");
+          bank.className = "word-bank";
+          bank.dataset.qid = item.id;
+          q.appendChild(bank);
+          const drop = document.createElement("div");
+          drop.className = "dropzone";
+          drop.dataset.qid = item.id;
+          q.appendChild(drop);
+          el.appendChild(q);
+          const words = Array.from(item.words);
+          shuffle(words);
+          words.forEach((w) => {
+            const d = document.createElement("div");
+            d.className = "word";
+            d.draggable = true;
+            d.textContent = w;
+            d.addEventListener("dragstart", (ev) => {
+              ev.dataTransfer.setData(
+                "text/plain",
+                JSON.stringify({ qid: item.id, text: w, src: "bank" })
+              );
+            });
+            bank.appendChild(d);
+          });
+          drop.addEventListener("dragover", (ev) => ev.preventDefault());
+          drop.addEventListener("drop", (ev) => {
+            ev.preventDefault();
+            const payload = JSON.parse(ev.dataTransfer.getData("text/plain"));
+            const text = payload.text;
+            const fromBank = [
+              ...document.querySelectorAll("#" + item.id + " .word-bank .word"),
+            ];
+            let movedEl = fromBank.find((n) => n.textContent === text);
+            if (movedEl) {
+              const clone = movedEl.cloneNode(true);
+              attachDragForPlaced(clone);
+              drop.appendChild(clone);
+              movedEl.remove();
+              // --- Cho phép kéo từ dropzone trả lại word-bank ---
+              bank.addEventListener("dragover", (ev) => ev.preventDefault());
+              bank.addEventListener("drop", (ev) => {
+                ev.preventDefault();
+                const payload = JSON.parse(
+                  ev.dataTransfer.getData("text/plain")
+                );
+                const text = payload.text;
+                const fromDrop = [
+                  ...document.querySelectorAll(
+                    "#" + item.id + " .dropzone .word"
+                  ),
+                ];
+                let movedEl = fromDrop.find((n) => n.textContent === text);
+                if (movedEl) {
+                  const clone = movedEl.cloneNode(true);
+                  clone.draggable = true;
+                  clone.addEventListener("dragstart", (ev2) => {
+                    ev2.dataTransfer.setData(
+                      "text/plain",
+                      JSON.stringify({ qid: item.id, text: text, src: "bank" })
+                    );
+                  });
+                  bank.appendChild(clone);
+                  movedEl.remove();
+                }
+              });
+            }
+          });
+        });
+      }
+
+      function attachDragForPlaced(el) {
+        el.addEventListener("dragstart", (ev) => {
+          const parentQ = ev.target.closest(".question");
+          ev.dataTransfer.setData(
+            "text/plain",
+            JSON.stringify({
+              qid: parentQ.id,
+              text: ev.target.textContent,
+              src: "placed",
+            })
+          );
+        });
+      }
+
+      // --- Check Answers ---
+      function checkAnswers() {
+        document.querySelectorAll(".question").forEach((q) => {
+          q.classList.remove("correct", "incorrect");
+          q.querySelectorAll(".answer-key").forEach((a) => a.remove());
+        });
+        let total = 0,
+          correctCount = 0;
+
+        // ---- Part1 ----
+        data.part1.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            const ak = document.createElement("div");
+            ak.className = "answer-key";
+            ak.textContent = "Answer: " + item.opts[item.ans];
+            q.appendChild(ak);
+          }
+        });
+
+        // ---- Part2 ----
+        data.part2.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            const ak = document.createElement("div");
+            ak.className = "answer-key";
+            ak.textContent = "Answer: " + item.opts[item.ans];
+            q.appendChild(ak);
+          }
+        });
+
+        // ---- Part3 ----
+        data.part3.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            const ak = document.createElement("div");
+            ak.className = "answer-key";
+            ak.textContent = "Answer: " + item.opts[item.ans];
+            q.appendChild(ak);
+          }
+        });
+
+        // ---- Part4 ----
+        data.part4.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          if (item.type === "tf") {
+            const sel = q.querySelector("input[type=radio]:checked");
+            if (sel && Number(sel.value) === item.ans) {
+              q.classList.add("correct");
+              correctCount++;
+            } else {
+              q.classList.add("incorrect");
+              const ak = document.createElement("div");
+              ak.className = "answer-key";
+              ak.textContent = "Answer: " + item.opts[item.ans];
+              q.appendChild(ak);
+            }
+          } else if (item.type === "fill") {
+            const inp = q.querySelector("input");
+            const val = inp.value.trim().toLowerCase();
+            const ansNorm = item.ans.trim().toLowerCase();
+            if (val === ansNorm) {
+              q.classList.add("correct");
+              correctCount++;
+            } else {
+              q.classList.add("incorrect");
+              const ak = document.createElement("div");
+              ak.className = "answer-key";
+              ak.textContent = "Answer: " + item.ans;
+              q.appendChild(ak);
+            }
+          }
+        });
+
+        // ---- Part5 ----
+        data.part5.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const inp = q.querySelector("input");
+          const val = inp.value.trim().toLowerCase();
+          const ans = item.ans.trim().toLowerCase();
+          if (val === ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            const ak = document.createElement("div");
+            ak.className = "answer-key";
+            ak.textContent = "Answer: " + item.ans;
+            q.appendChild(ak);
+          }
+        });
+
+        // ---- Part6 ----
+        data.part6.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const drop = q.querySelector(".dropzone");
+          const parts = Array.from(drop.children).map((n) =>
+            n.textContent.trim()
+          );
+          const sentence = parts.join(" ").replace(/\s+/g, " ").trim();
+          const ansNorm = item.q.replace(/\s+/g, " ").trim();
+          const sNorm = sentence.toLowerCase().replace(/\s+/g, " ").trim();
+          const aNorm = ansNorm.toLowerCase().replace(/\s+/g, " ").trim();
+          if (sNorm === aNorm) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            const ak = document.createElement("div");
+            ak.className = "answer-key";
+            ak.textContent = "Answer: " + item.q;
+            q.appendChild(ak);
+          }
+        });
+
+        // --- Update score ---
+        document.getElementById(
+          "scoreDisplay"
+        ).textContent = `Score: ${correctCount} / ${total}`;
+      }
+
+      // --- Reset ---
+      function resetAll() {
+        document.getElementById("scoreDisplay").textContent = "";
+        renderAll();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // --- Render All ---
+      function renderAll() {
+        renderPart1();
+        renderPart2();
+        renderPart3();
+        renderPart4();
+        renderPart5();
+        renderPart6();
+      }
+
+      // --- Init ---
+      renderAll();
+
+      // --- Menu buttons ---
+      document.getElementById("showScoreBtn").onclick = () => checkAnswers();
+      document.getElementById("redoBtn").onclick = () => resetAll();
+      document.getElementById("toggleAnsBtn").onclick = () => {
+        if (!document.querySelector(".answer-key")) {
+          checkAnswers();
+        }
+        document.querySelectorAll(".answer-key").forEach((el) => {
+          el.style.display =
+            el.style.display === "none" || el.style.display === ""
+              ? "block"
+              : "none";
+        });
+      };
+    </script>
+  </body>
+</html>
