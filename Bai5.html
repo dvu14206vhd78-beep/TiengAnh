@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tiếng Anh Bài 5</title>
+    <style>
+      :root {
+        --ok: #d4edda;
+        --bad: #f8d7da;
+        --muted: #666;
+        --primary: #0d6efd;
+        --secondary: #6c757d;
+        --bg: #f4f8fb;
+        --card-bg: #fff;
+      }
+      body {
+        font-family: Inter, Roboto, Arial, sans-serif;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0;
+        background: var(--bg);
+        color: #111;
+      }
+
+      /* Top Menu */
+      .top-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e6f7ff;
+        padding: 14px 20px;
+        border-bottom: 2px solid #d0ebff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .menu-title {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #0d6efd;
+      }
+
+      .menu-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .menu-buttons .btn {
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 500;
+        transition: background 0.2s ease, transform 0.1s ease;
+      }
+
+      .menu-buttons .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .menu-buttons .btn.secondary {
+        background: var(--secondary);
+        color: #fff;
+      }
+
+      .menu-buttons .btn:hover {
+        opacity: 0.9;
+        transform: scale(1.03);
+      }
+
+      #scoreDisplay {
+        font-weight: 700;
+        margin-left: 12px;
+        color: #333;
+      }
+
+      /* Main Container */
+      h1 {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      h2 {
+        margin-top: 30px;
+        color: #0d6efd;
+        border-bottom: 2px solid #d0ebff;
+        padding-bottom: 4px;
+      }
+
+      .container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Question block */
+      .question {
+        padding: 14px;
+        border-radius: 10px;
+        margin: 14px 0;
+        border: 1px solid #eee;
+        background: #fafafa;
+        transition: 0.2s ease;
+      }
+
+      .question:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .q-title {
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .options label {
+        display: block;
+        margin: 8px 0;
+        padding: 6px 10px;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+      }
+
+      .options label:hover {
+        background: #c5d4fa;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .answer-key {
+        margin-top: 8px;
+        font-size: 0.95em;
+        color: var(--muted);
+      }
+
+      .correct {
+        background: var(--ok) !important;
+      }
+
+      .incorrect {
+        background: var(--bad) !important;
+      }
+
+      /* Drag & drop */
+      .word-bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+        border: 1px dashed #ccc;
+        border-radius: 8px;
+        min-height: 48px;
+        background: #fff;
+      }
+
+      .word {
+        background: #f0f0f0;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: grab;
+        border: 1px solid #d0d0d0;
+      }
+
+      .dropzone {
+        min-height: 48px;
+        padding: 8px;
+        border: 1px dashed #bbb;
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: #fff;
+      }
+
+      .small {
+        font-size: 0.95em;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .passage {
+        background: #fdfdfd;
+        border-left: 4px solid #0d6efd;
+        padding: 12px;
+        margin: 14px 0;
+        border-radius: 6px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Menu trên cùng -->
+    <div class="top-menu">
+      <div class="menu-title">Ôn tập Tiếng Anh Bài 5</div>
+      <div class="menu-buttons">
+        <button class="btn primary" id="showScoreBtn">Xem kết quả</button>
+        <button
+          class="btn secondary"
+          id="redoBtn"
+          style="background-color: #111"
+        >
+          Làm lại & đảo câu
+        </button>
+        <button class="btn secondary" id="toggleAnsBtn">
+          Hiện/ẩn đáp án đúng
+        </button>
+        <span id="scoreDisplay"></span>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Part 1</h2>
+      <div id="part1"></div>
+
+      <h2>Part 2</h2>
+      <div id="part2"></div>
+
+      <h2>Part 3</h2>
+      <div id="part3"></div>
+
+      <h2>Part 4</h2>
+      <div id="part4"></div>
+
+      <h2>Part 5</h2>
+      <div id="part5"></div>
+
+      <h2>Part 6</h2>
+      <div id="part6"></div>
+    </div>
+
+    <script>
+      // --- Data ---
+      const data = {
+        part1: [
+          {
+            id: "p1q1",
+            q: "Màn hình độ phân giải cao rất cần thiết để xem rõ hình ảnh.",
+            opts: [
+              "High-definition monitors are essential to see images clearly.",
+              "Low-definition monitors are essential for clear images.",
+              "High-definition microphones create images clearly.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p1q2",
+            q: "Cuộc họp video giúp mọi người cộng tác dễ dàng hơn.",
+            opts: [
+              "Video meetings help people collaborate more easily.",
+              "Video meetings don’t help people work together easily.",
+              "Video meetings reduce the number of participants easily.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p1q3",
+            q: "Internet tốc độ cao giúp cải thiện chất lượng cuộc gọi.",
+            opts: [
+              "High-speed internet helps improve call quality.",
+              "High-speed internet increases delays.",
+              "Low-speed internet improves security.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p1q4",
+            q: "Người tham gia cuộc họp nên tắt micro khi không nói.",
+            opts: [
+              "Participants should turn on the microphone when not speaking.",
+              "Participants should mute their microphone when not speaking.",
+              "Participants should leave the meeting when not speaking.",
+            ],
+            ans: 1,
+          },
+        ],
+        part2: [
+          {
+            id: "p2q1",
+            q: "Question 1: If she ....................... a better microphone, her voice would be clearer.",
+            opts: ["have ", "has", "had"],
+            ans: 2,
+          },
+          {
+            id: "p2q2",
+            q: "A: How would things change if we …… better screen sharing tools? B: We …… data and charts more clearly in our presentations. ",
+            opts: ["used/ saw ", "use/ will see", "used/ would see"],
+            ans: 2,
+          },
+          {
+            id: "p2q3",
+            q: "Their team….. remotely every week if they….. conferencing technology.",
+            opts: ["would meet/ used", "would meet/ use", "met/ would use"],
+            ans: 0,
+          },
+          {
+            id: "p2q4",
+            q: "A: If the company ..................... in better equipment, meetings would be more effective. B: That's right.",
+            opts: ["invested", "invest", "invests"],
+            ans: 0,
+          },
+          {
+            id: "p2q5",
+            q: "What would you do if your conferencing platform suddenly stopped working? B: I ……………… the IT team to fix the issue quickly. ",
+            opts: ["would call", "call", "called"],
+            ans: 0,
+          },
+        ],
+        part3: [
+          {
+            id: "p3q1",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Many companies record video conferences so employees who cannot attend can watch later. These recordings are useful for training and reviewing important discussions. Privacy is important, so participants are usually informed when a session is being recorded. Some platforms automatically notify everyone with a message or sound alert at the start of recording",
+            q: "Why do companies record video conferences ?",
+            opts: [
+              "To punish employees. ",
+              "To let people review meetings later.",
+              "To save internet bandwidth.",
+            ],
+            ans: 1,
+          },
+          {
+            id: "p3q2",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Some video conferencing software allows virtual backgrounds. This feature lets users display an image or blur their real background. It can help maintain privacy and create a more professional look. For example, a person working from home may use a company logo or a plain color as their background. However, virtual backgrounds may require more computer processing power and a good camera to work smoothly",
+            q: "Why do people use virtual backgrounds in video calls?",
+            opts: [
+              "To hide their real environment.",
+              "To reduce computer memory use.",
+              "To improve internet speed.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p3q3",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Before joining a video conference, it is recommended to test your camera and microphone. Poor audio or video quality can make communication difficult. Participants should also check the lighting in their room so their faces are clear on camera. If there is background noise, using headphones or muting the microphone when not speaking can help. These steps make online meetings more professional and productive",
+            q: "What should you do before a video conference?",
+            opts: [
+              "Make sure your lighting and audio work well.",
+              "Ignore camera and microphone settings.",
+              "Leave your microphone on all the time.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p3q4",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "One benefit of video conferencing is saving time and travel costs. Instead of flying to another city for a meeting, people can connect instantly online. This also helps reduce carbon emissions from transportation. However, video conferencing can have challenges like poor audio quality or unstable connections. To avoid problems, participants should test their equipment and internet before important calls",
+            q: "What is one advantage of video conferencing?",
+            opts: [
+              "It reduces the need to travel. ",
+              "It guarantees perfect audio every time.",
+              "It always works without preparation.",
+            ],
+            ans: 0,
+          },
+          {
+            id: "p3q5",
+            instruction:
+              "Read the passage and choose the correct answer to the question.",
+            passage:
+              "Video conferencing allows people to communicate in real time using audio and video over the internet. It is commonly used for remote meetings, interviews, and online classes. Participants can share their screens, send messages, and record sessions for future reference. To join a video conference, users usually need a webcam, microphone, and stable internet connection. Popular platforms include Zoom, Microsoft Teams, and Google Meet",
+            q: "What do you need to join a video conference?",
+            opts: [
+              "A special computer with extra memory",
+              "A printed invitation",
+              "A webcam and internet connection",
+            ],
+            ans: 2,
+          },
+        ],
+        part4: [
+          {
+            id: "p4q1",
+            instruction:
+              "Fill in the blank with THREE or FOUR words from the text to complete the summary.",
+            passage:
+              "A high-quality video conferencing room is equipped with proper lighting, cameras and audio devices. It provides a professional environment and minimizes technical issues. Because everything is set up in advance, meetings can begin on time without delays caused by adjusting equipment. This setup also improves the communication quality and helps participants stay focused, making discussions more productive and efficient overall",
+            q: "Summary: A well-equipped room has good devices for meetings. It makes a professional environment and saves time, making …….. more effective",
+            type: "fill",
+            ans: "the discussions",
+          },
+          {
+            id: "p4q2",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Video conferencing helps people communicate face-to-face without being in the same room. It is widely used in business, education, and healthcare. Doctors can speak with patients remotely, and teachers can hold virtual classes. One major advantage is that it saves time and travel costs. However, users need a stable internet connection and compatible devices to participate effectively",
+            q: "Video conferencing is only used in the business sector",
+            type: "tf",
+            opts: ["False", "True"],
+            ans: 0,
+          },
+          {
+            id: "p4q3",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Many video conferencing tools offer features like screen sharing, chat, and breakout rooms. Screen sharing allows presenters to show slides or documents during meetings. Breakout rooms are useful for group discussions in online classes or workshops. These tools make virtual meetings more interactive and organized, helping participants stay engaged and collaborate better",
+            q: "Breakout rooms are used for smaller group discussions during video calls.",
+            type: "tf",
+            opts: ["False", "True"],
+            ans: 1,
+          },
+          {
+            id: "p4q4",
+            instruction:
+              "Read the passage. Decide if the statement is True or False based on the information from the text.",
+            passage:
+              "Good lighting and clear audio are important for professional video conferencing. People should sit facing a light source, like a window or lamp, so their face is visible. Background noise should be reduced, and participants should mute their microphones when not speaking. These simple steps improve communication and reduce distractions during meetings",
+            q: "It’s better to sit with your back to a light source during a video call.",
+            type: "tf",
+            opts: ["True", "False"],
+            ans: 1,
+          },
+          {
+            id: "p4q5",
+            instruction:
+              "Fill in the blank with THREE or FOUR words from the text to complete the summary.",
+            passage:
+              "Many video conferencing platforms offer security features like passwords, encryption, and waiting rooms. These protect meetings from unauthorized access and help keep sensitive information safe. Organizations should use these features to maintain confidentiality during important discussions",
+            q: "Summary: Security tools like ……….or waiting rooms keep meetings safe. They help protect sensitive information and important discussions",
+            type: "fill",
+            ans: "passwords, encryption",
+          },
+          {
+            id: "p4q6",
+            instruction:
+              "Fill in the blank with THREE or FOUR words from the text to complete the summary.",
+            passage:
+              "Webcams make virtual meetings more personal by allowing participants to see each other in real time. This visual connection builds trust and increases engagement during discussions. Using a high-quality webcam also enhances image clarity, making professional communication more effective",
+            q: "Summary: Webcams add real-time video and build visual connection, ................. during discussions. It also makes professional communication more effective.",
+            type: "fill",
+            ans: "increase engagement",
+          },
+        ],
+        part5: [
+          {
+            id: "p5q1",
+            p: "Complete the sentences with TWO or THREE words using the given prompt.",
+            q: "A : What ………… we didn’t record our meetings each week ? B : We would miss important details. (if/ happen)",
+            ans: "would happen if",
+          },
+          {
+            id: "p5q2",
+            p: "Complete the sentences with TWO or THREE words using the given prompt. ",
+            q: "If the internet is very slow and unstable, the video……….. (freeze)",
+            ans: "will freeze",
+          },
+          {
+            id: "p5q3",
+            p: "Complete the sentences with TWO or THREE words using the given prompt.",
+            q: "A : How would things change if we ……… the system earlier? B: The video call wouldn’t start right on time without delays. (not/ set) ",
+            ans: "didn't set up",
+          },
+          {
+            id: "p5q4",
+            p: "Complete the sentences with TWO or THREE words using the given prompt.",
+            q: "If you .................. your microphone, no one will hear you. (not/check)",
+            ans: "don't check",
+          },
+          {
+            id: "p5q5",
+            p: "Complete the sentences with TWO or THREE words using the given prompt.",
+            q: "If I ................. more money, I wouldn't buy a new webcam. (not/have)",
+            ans: "didn't have",
+          },
+        ],
+        part6: [
+          {
+            id: "p6q1",
+            q: "What would you do if your conferencing platform suddenly stopped working?",
+            words: [
+              "if",
+              "conferencing",
+              "working?",
+              "What",
+              "your",
+              "do",
+              "you",
+              "platform",
+              "would",
+              "suddenly stopped",
+            ],
+          },
+          {
+            id: "p6q2",
+            q: "If we had secure logins, our video conferencing would be more protected.",
+            words: [
+              "conferencing",
+              "our video",
+              "secure logins,",
+              "be more",
+              "had",
+              "If we",
+              "would",
+              "protected.",
+            ],
+          },
+          {
+            id: "p6q3",
+            q: "If the company didn’t train the team, they wouldn’t use the control panel correctly.",
+            words: [
+              "use",
+              "panel",
+              "train",
+              "the team,",
+              "they",
+              "the company",
+              "wouldn’t",
+              "didn’t",
+              "If",
+              "correctly.",
+              "the control",
+            ],
+          },
+          {
+            id: "p6q4",
+            q: "If I knew how to share files, I would collaborate better with my remote team.",
+            words: [
+              "my remote",
+              "I",
+              "better with",
+              "share files,",
+              "knew",
+              "If I",
+              "team.",
+              "collaborate",
+              "how to",
+              "would",
+            ],
+          },
+          {
+            id: "p6q5",
+            q: "If she were the manager, she would buy better equipment.",
+            words: [
+              "she",
+              "were",
+              "the manager,",
+              "better",
+              "If",
+              "she would",
+              "equipment.",
+              "buy",
+            ],
+          },
+        ],
+      };
+
+      // --- Utility ---
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      // --- Render Part1 ---
+      function renderPart1() {
+        const el = document.getElementById("part1");
+        el.innerHTML = "";
+        data.part1.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part2 ---
+      function renderPart2() {
+        const el = document.getElementById("part2");
+        el.innerHTML = "";
+        data.part2.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part3 ---
+      function renderPart3() {
+        const el = document.getElementById("part3");
+        el.innerHTML = "";
+        data.part3.forEach((item, idx) => {
+          if (item.instruction) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.instruction;
+            el.appendChild(instr);
+          }
+          if (item.passage) {
+            const passage = document.createElement("div");
+            passage.className = "passage";
+            passage.textContent = item.passage;
+            el.appendChild(passage);
+          }
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const opts = document.createElement("div");
+          opts.className = "options";
+          const order = shuffle(item.opts.map((v, i) => ({ v, i }))).map(
+            (o) => o.i
+          );
+          q.dataset.order = JSON.stringify(order);
+          order.forEach((origIndex) => {
+            const label = document.createElement("label");
+            const r = document.createElement("input");
+            r.type = "radio";
+            r.name = item.id;
+            r.value = origIndex;
+            label.appendChild(r);
+            label.append(" " + item.opts[origIndex]);
+            opts.appendChild(label);
+          });
+          q.appendChild(opts);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part4 ---
+      function renderPart4() {
+        const el = document.getElementById("part4");
+        el.innerHTML = "";
+        data.part4.forEach((item, idx) => {
+          if (item.instruction) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.instruction;
+            el.appendChild(instr);
+          }
+          if (item.passage) {
+            const passage = document.createElement("div");
+            passage.className = "passage";
+            passage.textContent = item.passage;
+            el.appendChild(passage);
+          }
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          if (item.type === "tf") {
+            const opts = document.createElement("div");
+            opts.className = "options";
+            item.opts.forEach((opt, i) => {
+              const label = document.createElement("label");
+              const r = document.createElement("input");
+              r.type = "radio";
+              r.name = item.id;
+              r.value = i;
+              label.appendChild(r);
+              label.append(" " + opt);
+              opts.appendChild(label);
+            });
+            q.appendChild(opts);
+          } else if (item.type === "fill") {
+            const inp = document.createElement("input");
+            inp.type = "text";
+            inp.name = item.id;
+            q.appendChild(inp);
+          }
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part5 ---
+      function renderPart5() {
+        const el = document.getElementById("part5");
+        el.innerHTML = "";
+        data.part5.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          if (item.p) {
+            const instr = document.createElement("div");
+            instr.className = "small";
+            instr.textContent = item.p;
+            q.appendChild(instr);
+          }
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 1 + ". " + item.q;
+          q.appendChild(title);
+          const inp = document.createElement("input");
+          inp.type = "text";
+          inp.name = item.id;
+          q.appendChild(inp);
+          el.appendChild(q);
+        });
+      }
+
+      // --- Render Part6 (Kéo thả hai chiều + sắp xếp lại) ---
+      function renderPart6() {
+        const el = document.getElementById("part6");
+        el.innerHTML = "";
+        data.part6.forEach((item, idx) => {
+          const q = document.createElement("div");
+          q.className = "question";
+          q.id = item.id;
+          q.dataset.answer = item.q;
+
+          const title = document.createElement("div");
+          title.className = "q-title";
+          title.textContent = idx + 13 + ". Put the words in order.";
+          q.appendChild(title);
+
+          const bank = document.createElement("div");
+          bank.className = "word-bank";
+          bank.dataset.qid = item.id;
+          q.appendChild(bank);
+
+          const drop = document.createElement("div");
+          drop.className = "dropzone";
+          drop.dataset.qid = item.id;
+          q.appendChild(drop);
+
+          el.appendChild(q);
+
+          const words = shuffle([...item.words]);
+          words.forEach((w) => {
+            const d = createWordEl(w, item.id);
+            bank.appendChild(d);
+          });
+
+          enableDrop(bank);
+          enableDrop(drop);
+        });
+      }
+
+      // --- Tạo phần tử word + gắn sự kiện dragstart
+      function createWordEl(text, qid) {
+        const d = document.createElement("div");
+        d.className = "word";
+        d.draggable = true;
+        d.textContent = text;
+        d.dataset.qid = qid;
+        d.addEventListener("dragstart", (ev) => {
+          ev.dataTransfer.setData("text/plain", JSON.stringify({ qid, text }));
+        });
+        return d;
+      }
+
+      // --- Cho phép thả vào bank hoặc dropzone ---
+      function enableDrop(container) {
+        container.addEventListener("dragover", (ev) => ev.preventDefault());
+        container.addEventListener("drop", (ev) => {
+          ev.preventDefault();
+          const payload = JSON.parse(ev.dataTransfer.getData("text/plain"));
+          const qid = payload.qid;
+          const text = payload.text;
+
+          // tìm và xóa phần tử gốc
+          const allWords = document.querySelectorAll(
+            `[data-qid="${qid}"].word`
+          );
+          const sourceEl = [...allWords].find((el) => el.textContent === text);
+          if (sourceEl) sourceEl.remove();
+
+          // tạo lại word mới và gắn vào container hiện tại
+          const newWord = createWordEl(text, qid);
+          container.appendChild(newWord);
+        });
+      }
+
+      // --- Check Answers ---
+      function checkAnswers() {
+        document.querySelectorAll(".question").forEach((q) => {
+          q.classList.remove("correct", "incorrect");
+          q.querySelectorAll(".answer-key").forEach((a) => a.remove());
+        });
+
+        let total = 0,
+          correctCount = 0;
+
+        // ---- Part1 ----
+        data.part1.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            addAnswerKey(q, item.opts[item.ans]);
+          }
+        });
+
+        // ---- Part2 ----
+        data.part2.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            addAnswerKey(q, item.opts[item.ans]);
+          }
+        });
+
+        // ---- Part3 ----
+        data.part3.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const sel = q.querySelector("input[type=radio]:checked");
+          if (sel && Number(sel.value) === item.ans) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            addAnswerKey(q, item.opts[item.ans]);
+          }
+        });
+
+        // ---- Part4 ----
+        data.part4.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          if (item.type === "tf") {
+            const sel = q.querySelector("input[type=radio]:checked");
+            if (sel && Number(sel.value) === item.ans) {
+              q.classList.add("correct");
+              correctCount++;
+            } else {
+              q.classList.add("incorrect");
+              addAnswerKey(q, item.opts[item.ans]);
+            }
+          } else if (item.type === "fill") {
+            const inp = q.querySelector("input");
+            const val = inp.value.trim().toLowerCase();
+            const ansNorm = item.ans.trim().toLowerCase();
+            if (val === ansNorm) {
+              q.classList.add("correct");
+              correctCount++;
+            } else {
+              q.classList.add("incorrect");
+              addAnswerKey(q, item.ans);
+            }
+          }
+        });
+
+        // ---- Part5 ----
+        data.part5.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const inp = q.querySelector("input");
+          const val = inp.value.trim().toLowerCase();
+          const ansNorm = item.ans.trim().toLowerCase();
+          if (val === ansNorm) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            addAnswerKey(q, item.ans);
+          }
+        });
+
+        // ---- Part6 ----
+        data.part6.forEach((item) => {
+          total++;
+          const q = document.getElementById(item.id);
+          const placed = [...q.querySelectorAll(".dropzone .word")]
+            .map((el) => el.textContent.trim())
+            .join(" ");
+          if (placed === item.q) {
+            q.classList.add("correct");
+            correctCount++;
+          } else {
+            q.classList.add("incorrect");
+            addAnswerKey(q, item.q);
+          }
+        });
+
+        document.getElementById(
+          "scoreDisplay"
+        ).textContent = `Điểm: ${correctCount}/${total}`;
+      }
+
+      function addAnswerKey(container, ans) {
+        const ak = document.createElement("div");
+        ak.className = "answer-key";
+        ak.textContent = "Answer: " + ans;
+        container.appendChild(ak);
+      }
+
+      // Nút Làm lại (đảo câu + reset điểm)
+      document.getElementById("redoBtn").addEventListener("click", () => {
+        // gọi lại toàn bộ render
+        renderPart1();
+        renderPart2();
+        renderPart3();
+        renderPart4();
+        renderPart5();
+        renderPart6();
+        document.getElementById("scoreDisplay").textContent = "";
+      });
+
+      // Nút Ẩn / Hiện đáp án
+      document.getElementById("toggleAnsBtn").addEventListener("click", () => {
+        document.querySelectorAll(".answer-key").forEach((ak) => {
+          ak.style.display = ak.style.display === "none" ? "block" : "none";
+        });
+      });
+
+      // Khởi tạo khi load trang
+      renderPart1();
+      renderPart2();
+      renderPart3();
+      renderPart4();
+      renderPart5();
+      renderPart6();
+
+      document
+        .getElementById("showScoreBtn")
+        .addEventListener("click", checkAnswers);
+    </script>
+  </body>
+</html>
